@@ -1,0 +1,7 @@
+h1. NACarousel
+
+Simple implementation of a slideshow for iOS that uses CATransitions.
+
+See the demo application for sample usage.
+
+This is still in the early stages of development. Feel free to lend a hand.
