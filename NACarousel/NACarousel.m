@@ -15,18 +15,25 @@
 - (void)transitionTo:(UIImageView *)newView;
 - (UIImageView *)currentImageView;
 
+@property (nonatomic, assign, readwrite) BOOL isTransitioning;
+@property (nonatomic, assign, readwrite) BOOL isStarted;
+
 @end
 
 @implementation NACarousel
 
-@synthesize images = _images;
+@synthesize images          = _images;
+@synthesize isTransitioning = _isTransitioning;
+@synthesize isStarted       = _isStarted;
 
 - (id)initWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
 
 	if (self) {
-		_images        = [[NSMutableArray alloc] initWithCapacity:2];
-		_carouselTimer = nil;
+		_images          = [[NSMutableArray alloc] initWithCapacity:2];
+		_carouselTimer   = nil;
+		_isTransitioning = NO;
+		_isStarted       = NO;
 	}
 
 	return self;
@@ -71,12 +78,18 @@
 - (void)start {
 	if (_carouselTimer == nil) {
 		_carouselTimer = [NSTimer scheduledTimerWithTimeInterval:2.0f target:self selector:@selector(next) userInfo:nil repeats:YES];
+		self.isStarted = YES;
 	}
 }
 
 - (void)stop {
 	[_carouselTimer invalidate];
+	self.isStarted = NO;
 	_carouselTimer = nil;
+}
+
+- (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag {
+	self.isTransitioning = NO;
 }
 
 #pragma mark Private methods
@@ -92,13 +105,20 @@
 }
 
 - (void)transitionTo:(UIImageView *)newView {
-	// Can the transition be a property?
+	// Don't transition if already in a transition
+	if (self.isTransitioning) {
+		return;
+	}
 
+	self.isTransitioning = YES;
+
+	// Can the transition be a property?
 	CATransition *transition = [CATransition animation];
 
 	transition.duration       = 0.75f;
 	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 	transition.type           = kCATransitionFade;
+	transition.delegate       = self;
 
 	[self.layer addAnimation:transition forKey:nil];
 

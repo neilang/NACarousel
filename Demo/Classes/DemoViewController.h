@@ -11,6 +11,12 @@
 
 @interface DemoViewController : UIViewController {
 	NACarousel *carousel;
+    
+    UIButton *nextButton;
+    UIButton *prevButton;
+    UIButton *startButton;
+    UIButton *stopButton;
+    
 }
 
 - (IBAction)next:(id)sender;
@@ -19,6 +25,12 @@
 - (IBAction)stop:(id)sender;
 
 @property (nonatomic, retain) IBOutlet NACarousel *carousel;
+
+@property (nonatomic, retain) IBOutlet UIButton *nextButton;
+@property (nonatomic, retain) IBOutlet UIButton *prevButton;
+@property (nonatomic, retain) IBOutlet UIButton *startButton;
+@property (nonatomic, retain) IBOutlet UIButton *stopButton;
+
 
 @end
 
