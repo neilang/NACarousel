@@ -12,8 +12,12 @@
 	@private
 	NSMutableArray *_images;
 	NSTimer        *_carouselTimer;
-	BOOL            _isTransitioning;
-	BOOL            _isStarted;
+
+	BOOL _isTransitioning;
+	BOOL _isStarted;
+
+	float _transitionDuration;
+	float _slideDuration;
 }
 
 - (void)addImage:(NSString *)imageName;
@@ -24,7 +28,11 @@
 - (void)stop;
 
 @property (nonatomic, retain, readonly) NSMutableArray *images;
-@property (nonatomic, assign, readonly) BOOL            isTransitioning;
-@property (nonatomic, assign, readonly) BOOL            isStarted;
+
+@property (nonatomic, assign, readonly) BOOL isTransitioning;
+@property (nonatomic, assign, readonly) BOOL isStarted;
+
+@property (nonatomic, assign) float transitionDuration;
+@property (nonatomic, assign) float slideDuration;
 
 @end

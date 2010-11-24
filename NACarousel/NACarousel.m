@@ -22,18 +22,22 @@
 
 @implementation NACarousel
 
-@synthesize images          = _images;
-@synthesize isTransitioning = _isTransitioning;
-@synthesize isStarted       = _isStarted;
+@synthesize images             = _images;
+@synthesize isTransitioning    = _isTransitioning;
+@synthesize isStarted          = _isStarted;
+@synthesize transitionDuration = _transitionDuration;
+@synthesize slideDuration      = _slideDuration;
 
 - (id)initWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
 
 	if (self) {
-		_images          = [[NSMutableArray alloc] initWithCapacity:2];
-		_carouselTimer   = nil;
-		_isTransitioning = NO;
-		_isStarted       = NO;
+		_images             = [[NSMutableArray alloc] initWithCapacity:2];
+		_carouselTimer      = nil;
+		_isTransitioning    = NO;
+		_isStarted          = NO;
+		_transitionDuration = 0.75f;
+		_slideDuration      = 2.0f;
 	}
 
 	return self;
@@ -49,6 +53,10 @@
 
 	[self.images addObject:imageView];
 	[self addSubview:imageView];
+}
+
+- (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag {
+	self.isTransitioning = NO;
 }
 
 #pragma mark Carousel Controls
@@ -77,7 +85,7 @@
 
 - (void)start {
 	if (_carouselTimer == nil) {
-		_carouselTimer = [NSTimer scheduledTimerWithTimeInterval:2.0f target:self selector:@selector(next) userInfo:nil repeats:YES];
+		_carouselTimer = [NSTimer scheduledTimerWithTimeInterval:self.slideDuration target:self selector:@selector(next) userInfo:nil repeats:YES];
 		self.isStarted = YES;
 	}
 }
@@ -86,10 +94,6 @@
 	[_carouselTimer invalidate];
 	self.isStarted = NO;
 	_carouselTimer = nil;
-}
-
-- (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag {
-	self.isTransitioning = NO;
 }
 
 #pragma mark Private methods
@@ -115,7 +119,7 @@
 	// Can the transition be a property?
 	CATransition *transition = [CATransition animation];
 
-	transition.duration       = 0.75f;
+	transition.duration       = self.transitionDuration;
 	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 	transition.type           = kCATransitionFade;
 	transition.delegate       = self;
