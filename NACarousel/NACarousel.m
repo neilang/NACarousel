@@ -115,15 +115,15 @@
 	}
 
 	self.isTransitioning = YES;
-    
+
 	CATransition *transition = [CATransition animation];
 
-    // Should these be properties?
+	// Should these be properties? Most likely yes.
 	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 	transition.type           = kCATransitionFade;
-    
-    transition.duration       = self.transitionDuration;
-	transition.delegate       = self;
+
+	transition.duration = self.transitionDuration;
+	transition.delegate = self;
 
 	[self.layer addAnimation:transition forKey:nil];
 
