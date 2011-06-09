@@ -53,6 +53,8 @@
 
 	[self.images addObject:imageView];
 	[self addSubview:imageView];
+  
+  [imageView release];
 }
 
 - (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag {

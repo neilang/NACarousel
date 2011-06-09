@@ -16,7 +16,9 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
-	self.carousel = [[NACarousel alloc] initWithFrame:CGRectMake(10, 10, 300, 300)];
+  NACarousel * nacarousel = [[NACarousel alloc] initWithFrame:CGRectMake(10, 10, 300, 300)];
+	self.carousel = nacarousel;
+  [nacarousel release];
 
 	[self.carousel addImage:@"image1.png"];
 	[self.carousel addImage:@"image2.png"];
