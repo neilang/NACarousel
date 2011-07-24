@@ -54,7 +54,9 @@
 	[self.images addObject:imageView];
 	[self addSubview:imageView];
   
+#if !__has_feature(objc_arc)
   [imageView release];
+#endif
 }
 
 - (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag {
@@ -133,10 +135,12 @@
 	newView.hidden                 = NO;
 }
 
+#if !__has_feature(objc_arc)
 - (void)dealloc {
 	[_carouselTimer invalidate];
 	[_images release];
 	[super dealloc];
 }
+#endif
 
 @end
